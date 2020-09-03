@@ -19,7 +19,10 @@ server.get('/', (req, res) => {
     }
   })
 
-  renderer.renderToString(app, (err, html) => {
+  renderer.renderToString(app, {
+    meta: `<meta name="description" content="测试">`,
+    title: '测试'
+  }, (err, html) => {
     if (err) {
       return res.status(500).end('Interal Server Error')
     }
