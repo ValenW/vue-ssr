@@ -1,5 +1,8 @@
+const fs = require('fs')
 const Vue = require('vue')
-const renderer = require('vue-server-renderer').createRenderer()
+const renderer = require('vue-server-renderer').createRenderer({
+  template: fs.readFileSync('./index.template.html', 'utf-8')
+})
 const express = require('express')
 
 const server = express()
@@ -12,7 +15,7 @@ server.get('/', (req, res) => {
     </div>
   `,
     data: {
-      message: 'home'
+      message: '测试'
     }
   })
 
