@@ -7,7 +7,7 @@
   "scripts": {
     "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.config.js",
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js",
-    "build": "rimraf dist yarn build:client && yarn build:server"
+    "build": "rimraf dist && yarn build:client && yarn build:server"
   },
   "dependencies": {
     "cross-env": "^7.0.2",
@@ -22,7 +22,10 @@
     "babel-loader": "^8.1.0",
     "css-loader": "^4.2.2",
     "file-loader": "^6.1.0",
+    "friendly-errors-webpack-plugin": "^1.7.0",
     "url-loader": "^4.1.0",
+    "vue-loader": "^15.9.3",
+    "vue-template-compiler": "^2.6.12",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-merge": "^5.1.3",
