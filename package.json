@@ -1,5 +1,5 @@
 {
-  "name": "ssr",
+  "name": "vue-ssr",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Valen <wang_wenl@worksap.co.jp>",
