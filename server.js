@@ -2,63 +2,40 @@
  * 通用应用 Web 服务启动脚本
  */
 const express = require("express");
-const Vue = require("vue");
-const VueServerRenderer = require("vue-server-renderer");
 const fs = require("fs");
-// 创建一个 express 实例
-const server = express();
+
+const serverBundle = require("./dist/vue-ssr-server-bundle.json");
+const clientManifest = require("./dist/vue-ssr-client-manifest.json");
+const template = fs.readFileSync("./index.template.html", "utf-8");
 // 生成一个渲染器
-const renderer = VueServerRenderer.createRenderer({
-  // 渲染器就会自动把渲染的结果注入到模板中
-  template: fs.readFileSync("./index.html", "utf-8"),
-});
-const createApp = () => {
-  const app = new Vue({
-    template: `
-      <div id="app">
-      <h1>Hello {{ message }}</h1>
-      <input v-model="message">
-      </div>
-      `,
-    data: {
-      message: "World",
-    },
-  });
-  return app;
-};
-server.get("/foo", (req, res) => {
-  const app = createApp();
-  app.message = "世界";
-  res.end("foo");
-});
+const renderer = require("vue-server-renderer").createBundleRenderer(
+  serverBundle,
+  {
+    template,
+    clientManifest,
+  }
+);
+
+const server = express();
+
+// 因为渲染好的HTML中会请求dist目录下的client脚本, 需要将dist挂载为静态目录
+server.use("/dist", express.static("./dist/"));
+
 // 设置一个路由
 server.get("/", async (req, res) => {
-  // const app = new Vue({
-  // template: `
-  // <div id="app">
-  // <h1>Hello {{ message }}</h1>
-  // <input v-model="message">
-  // </div>index.template.html
-
-  // `,
-  // data: {
-  // message: 'World'
-  // }
-  // })
   try {
-    const app = createApp();
-    const ret = await renderer.renderToString(app, {
+    // renderer会自动找到entry创建vue实例, 不需要手动创建
+    const html = await renderer.renderToString({
       title: "自定义页面标题",
-      meta: `
-<meta name="description" content="hello world">
-`,
+      meta: `<meta name="description" content="hello world">`,
     });
-    res.end(ret);
+    res.setHeader("Content-Type", "text/html; charset=utf8");
+    res.end(html);
   } catch (err) {
     res.status(500).end("Internal Server Error.");
   }
 });
-// 监听端口，启动 Web 服务
+
 server.listen(3000, () => {
   console.log("running at port 3000.");
 });
