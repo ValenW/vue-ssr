@@ -15,11 +15,11 @@ const renderer = VueServerRenderer.createRenderer({
 const createApp = () => {
   const app = new Vue({
     template: `
-<div id="app">
-<h1>Hello {{ message }}</h1>
-<input v-model="message">
-</div>
-`,
+      <div id="app">
+      <h1>Hello {{ message }}</h1>
+      <input v-model="message">
+      </div>
+      `,
     data: {
       message: "World",
     },
