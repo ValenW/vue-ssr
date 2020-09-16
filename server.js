@@ -3,29 +3,36 @@
  */
 const express = require("express");
 const fs = require("fs");
+const server = express();
+const { createBundleRenderer } = require("vue-server-renderer");
+const setupDevServer = require('./build/setup-dev-server');
+
+// 因为渲染好的HTML中会请求dist目录下的client脚本, 需要将dist挂载为静态目录
+server.use("/dist", express.static("./dist/"));
 
 const isProd = process.env.NODE_RNV === 'production';
 
+let renderer;
+let rendererReady;
 if (isProd) {
   const serverBundle = require("./dist/vue-ssr-server-bundle.json");
   const clientManifest = require("./dist/vue-ssr-client-manifest.json");
   const template = fs.readFileSync("./index.template.html", "utf-8");
   // 生成一个渲染器
-  const renderer = require("vue-server-renderer").createBundleRenderer(
-    serverBundle,
-    {
+  renderer = createBundleRenderer(serverBundle, {
+    template,
+    clientManifest,
+  });
+  rendererReady = Promise.resolve();
+} else {
+  // 监视打包构建, 完成后生成Renderer渲染器
+  rendererReady = setupDevServer(server, (serverBundle, template, clientManifest) => {
+    renderer = createBundleRenderer(serverBundle, {
       template,
       clientManifest,
-    }
-  );
-} else {
-  // TODO: 监视打包构建, 完成后生成Renderer渲染器
+    });
+  })
 }
-
-const server = express();
-
-// 因为渲染好的HTML中会请求dist目录下的client脚本, 需要将dist挂载为静态目录
-server.use("/dist", express.static("./dist/"));
 
 const render = async (req, res) => {
   try {
@@ -42,8 +49,9 @@ const render = async (req, res) => {
 }
 
 // 设置一个路由
-server.get("/", isProd ? render : (req, res) => {
-  // TODO: 等待有了renderer之后调用render进行渲染
+server.get("/", isProd ? render : async (req, res) => {
+  // 等待有了renderer之后调用render进行渲染
+  await rendererReady;
   render(req, res)
 });
 
