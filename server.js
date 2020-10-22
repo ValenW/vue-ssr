@@ -10,7 +10,7 @@ const setupDevServer = require("./build/setup-dev-server");
 // 因为渲染好的HTML中会请求dist目录下的client脚本, 需要将dist挂载为静态目录
 server.use("/dist", express.static("./dist/"));
 
-const isProd = process.env.NODE_RNV === "production";
+const isProd = process.env.NODE_ENV === "production";
 
 let renderer;
 let rendererReady;
