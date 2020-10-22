@@ -48,5 +48,22 @@ module.exports = (server, callback) => {
     update();
   });
 
+  const clientConfig = require("./webpack.client.config");
+  const clientCompiler = webpack(clientConfig);
+  const clientMiddleware = devMiddleware(clientCompiler, {
+    publicPath: clientConfig.output.publicPath,
+    logLevel: "silent",
+  });
+  clientCompiler.hooks.done.tap("update client", () => {
+    clientManifest = JSON.parse(
+      clientMiddleware.fileSystem.readFileSync(
+        resolve("../dist/vue-ssr-client-manifest.json", "utf-8")
+      )
+    );
+
+    console.log("client update", clientManifest);
+    update();
+  });
+
   return onReady;
 };
