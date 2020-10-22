@@ -16,7 +16,9 @@ module.exports = (server, callback) => {
 
   // 监视打包构建, 调用callback生成renderer
   const update = () => {
+    console.log("update");
     if (serverBundle && template && clientManifest) {
+      console.log("callback", callback);
       callback(serverBundle, template, clientManifest);
       ready();
     }
