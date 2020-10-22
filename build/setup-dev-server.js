@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const webpack = require("webpack");
 const chokidar = require("chokidar");
+const devMiddleware = require("webpack-dev-middleware");
 
 const resolve = (file) => path.resolve(__dirname, file);
 
@@ -34,14 +35,16 @@ module.exports = (server, callback) => {
 
   const serverConfig = require("./webpack.server.config");
   const serverCompiler = webpack(serverConfig);
-  serverCompiler.watch({}, (err, stats) => {
-    if (err) throw err; // webpack err, like config err
-    if (stats.hasErrors()) return; // our code err
+  const serverMiddleware = devMiddleware(serverCompiler, {
+    logLevel: "silent",
+  });
+  serverCompiler.hooks.done.tap("update server", () => {
     serverBundle = JSON.parse(
-      fs.readFileSync(resolve("../dist/vue-ssr-server-bundle.json"), "utf-8")
-    ); // not use require, for it has cache for old content
-    console.log("serverBundle update", serverBundle);
-
+      serverMiddleware.fileSystem.readFileSync(
+        resolve("../dist/vue-ssr-server-bundle.json", "utf-8")
+      )
+    );
+    console.log("server bundle", serverBundle);
     update();
   });
 
