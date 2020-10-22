@@ -29,7 +29,7 @@ module.exports = (server, callback) => {
   template = fs.readFileSync(templatePath, "utf-8");
   chokidar.watch(templatePath).on("change", () => {
     template = fs.readFileSync(templatePath, "utf-8");
-    console.log("template update", template);
+    // console.log("template update", template);
     update();
   });
 
@@ -44,7 +44,7 @@ module.exports = (server, callback) => {
         resolve("../dist/vue-ssr-server-bundle.json", "utf-8")
       )
     );
-    console.log("server bundle", serverBundle);
+    // console.log("server bundle", serverBundle);
     update();
   });
 
@@ -61,7 +61,7 @@ module.exports = (server, callback) => {
       )
     );
 
-    console.log("client update", clientManifest);
+    // console.log("client update", clientManifest);
     update();
   });
 
