@@ -28,6 +28,7 @@ module.exports = merge(baseConfig, {
       },
     ],
   },
+  // MORE
   // 重要信息：这将 webpack 运行时分离到一个引导 chunk 中，
   // 以便可以在之后正确注入异步 chunk。
   optimization: {

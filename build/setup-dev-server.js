@@ -1,6 +1,6 @@
 module.exports = (server, callback) => {
   let ready;
-  const onready = new Promise(r => ready = r);
+  const onReady = new Promise(r => ready = r);
 
   // 监视打包构建, 调用callback生成renderer
   const update = (serverBundle, template, clientManifest) => {
@@ -13,5 +13,5 @@ module.exports = (server, callback) => {
   // watching serverBundle, template, clientManifest, and call update
   
 
-  return onready;
+  return onReady;
 }
