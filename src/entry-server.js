@@ -5,7 +5,7 @@ export default async (context) => {
   // 以便服务器能够等待所有的内容在渲染前，
   // 就已经准备就绪。
 
-  const { app, router } = createApp();
+  const { app, router, store } = createApp();
 
   const meta = app.$meta();
 
@@ -31,6 +31,13 @@ export default async (context) => {
    */
 
   await new Promise(router.onReady.bind(router));
+
+  context.rendered = () => {
+    // 将context.state数据对象内联到页面模板中
+    // 最终生成页面上会包含一段脚本: `window.__INITIAL_STATE_ = ...`
+    // 客户端就会将window.__INITIAL_STATE_填充到客户端store容器中
+    context.state = store.state;
+  };
 
   return app;
 };
