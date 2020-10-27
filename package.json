@@ -16,6 +16,7 @@
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "vue": "^2.6.12",
+    "vue-meta": "^2.4.0",
     "vue-router": "^3.4.8",
     "vue-server-renderer": "^2.6.12"
   },
