@@ -18,7 +18,7 @@ export const createStore = () => {
     actions: {
       // 在服务端渲染期间必须让action返回Promise
       async getPosts({ commit }) {
-        const data = await axios.get("https://cnnodejs.org/api/v1/topics");
+        const data = await axios.get("https://api.github.com/gists/public");
         commit("setPosts", data.data);
       },
     },
