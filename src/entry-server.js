@@ -13,7 +13,7 @@ export default async (context) => {
 
   /**
    * 等到 router 将可能的异步组件和钩子函数解析完
-   * 
+   *
    * router.onReady(() => {
    *   const matchedComponents = router.getMatchedComponents();
    *   // 匹配不到的路由，执行 reject 函数，并返回 404
@@ -26,7 +26,7 @@ export default async (context) => {
    * }, reject);
    */
 
-  await new Promise(router.onReady);
+  await new Promise(router.onReady.bind(router));
 
   return app;
 };

@@ -5,7 +5,7 @@ import Home from "@/pages/Home";
 Vue.use(VueRouter);
 
 export const createRouter = () => {
-  const router = new VueRouter({
+  return new VueRouter({
     // 使用history模式兼容前后端, 绝大多数服务端不会处理hash
     mode: "history",
     routes: [

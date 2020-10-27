@@ -5,6 +5,17 @@
     <h2>{{ msg }}</h2>
     <input type="text" v-model="msg" />
     <button @click="clickHandler">click</button>
+
+    <br />
+
+    <ul>
+      <li>
+        <router-link to="/">Home</router-link>
+        <router-link to="/about">About</router-link>
+      </li>
+    </ul>
+
+    <router-view />
   </div>
 </template>
 <script>
