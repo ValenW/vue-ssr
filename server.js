@@ -43,6 +43,7 @@ const render = async (req, res) => {
     const html = await renderer.renderToString({
       title: "自定义页面标题",
       meta: `<meta name="description" content="Hello World">`,
+      url: req.url,
     });
     res.setHeader("Content-Type", "text/html; charset=utf8");
     res.end(html);
@@ -54,7 +55,7 @@ const render = async (req, res) => {
 
 // 设置一个路由
 server.get(
-  "/",
+  "*",
   isProd
     ? render
     : async (req, res) => {
