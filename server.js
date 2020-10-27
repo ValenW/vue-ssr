@@ -29,12 +29,10 @@ if (isProd) {
   rendererReady = setupDevServer(
     server,
     (serverBundle, template, clientManifest) => {
-      console.log(renderer, createBundleRenderer);
       renderer = createBundleRenderer(serverBundle, {
         template,
         clientManifest,
       });
-      console.log(renderer);
     }
   );
 }
@@ -61,9 +59,7 @@ server.get(
     ? render
     : async (req, res) => {
         // 等待有了renderer之后调用render进行渲染
-        console.log("enter");
         await rendererReady;
-        console.log("ready finished");
         render(req, res);
       }
 );

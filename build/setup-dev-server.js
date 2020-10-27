@@ -18,7 +18,6 @@ module.exports = (server, callback) => {
   const update = () => {
     console.log("update");
     if (serverBundle && template && clientManifest) {
-      console.log("callback", callback);
       callback(serverBundle, template, clientManifest);
       ready();
     }
@@ -31,7 +30,6 @@ module.exports = (server, callback) => {
   template = fs.readFileSync(templatePath, "utf-8");
   chokidar.watch(templatePath).on("change", () => {
     template = fs.readFileSync(templatePath, "utf-8");
-    // console.log("template update", template);
     update();
   });
 
@@ -46,7 +44,6 @@ module.exports = (server, callback) => {
         resolve("../dist/vue-ssr-server-bundle.json", "utf-8")
       )
     );
-    // console.log("server bundle", serverBundle);
     update();
   });
 
@@ -63,9 +60,11 @@ module.exports = (server, callback) => {
       )
     );
 
-    // console.log("client update", clientManifest);
     update();
   });
+
+  // 将clientMiddleware挂载到express服务中, 提供对其托管的内存数据访问
+  server.use(clientMiddleware)
 
   return onReady;
 };
