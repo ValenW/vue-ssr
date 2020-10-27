@@ -4,10 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hello World">
   <!-- 双大括号会将内容HTML转码后替换 -->
   <!-- 三大括号不转码为HTML, 直接字符串替换 -->
-  {{{ meta }}}
-  
+  {{{ meta.inject().title.text() }}}
+  {{{ meta.inject().meta.text() }}}
+
   <title>{{ title }}</title>
 </head>
 
@@ -15,4 +17,5 @@
   <!-- 服务端渲染的内容出口 -->
   <!--vue-ssr-outlet-->
 </body>
+
 </html>

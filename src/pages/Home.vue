@@ -8,6 +8,9 @@ export default {
   data() {
     return {};
   },
+  metaInfo: {
+    title: "Home",
+  },
   components: {},
   watch: {},
   mounted() {},

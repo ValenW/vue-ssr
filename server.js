@@ -42,7 +42,6 @@ const render = async (req, res) => {
     // renderer会自动找到entry创建vue实例, 不需要手动创建
     const html = await renderer.renderToString({
       title: "自定义页面标题",
-      meta: `<meta name="description" content="Hello World">`,
       url: req.url,
     });
     res.setHeader("Content-Type", "text/html; charset=utf8");

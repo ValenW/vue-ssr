@@ -1,6 +1,15 @@
 import Vue from "vue";
 import App from "./App.vue";
+import VueMeta from "vue-meta";
 import { createRouter } from "./router";
+
+Vue.use(VueMeta);
+
+Vue.mixin({
+  metaInfo: {
+    titleTemplate: "%s - Common Title",
+  },
+});
 
 // 导出一个工厂函数，用于创建新的
 // 应用程序、router 和 store 实例
